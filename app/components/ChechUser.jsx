@@ -11,8 +11,7 @@ const ChechUser = () => {
     const unSuscribe = auth.onAuthStateChanged( async (user) => {
       if (user) {
         setLoggedUser(user.displayName)
-        const tokenResult = await user.getIdTokenResult()
-        const token = tokenResult.token;
+        const token = await user.getIdToken(true)
         await setToken(token)
       } else {
         setLoggedUser(null)

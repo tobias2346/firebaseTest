@@ -10,11 +10,6 @@ export const setToken = async (token: string ) => {
     if (!verifiedToken)
       return 'error'
 
-    const userRecord = await auth.getUser(verifiedToken.uid)
-
-    if (!userRecord)
-      return 'error'
-
     const cookieStore = await cookies();
     cookieStore.set('session', token, {
       httpOnly: true,
@@ -22,6 +17,7 @@ export const setToken = async (token: string ) => {
     })
 
   } catch (error) {
+    console.log(error)
     return 'error'
   }
 
@@ -39,7 +35,7 @@ export const getCookie = async ({ cookieName }: { cookieName: string }) => {
 
 }
 
-export const deleteCookie = async ({ cookieName }: { cookieName: string }) => {
+export const deleteCookie = async (cookieName : string) => {
 
   try {
     const cookieStore = await cookies();
