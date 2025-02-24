@@ -2,9 +2,9 @@
 import { auth } from "@/firebase/server"
 import { cookies } from "next/headers"
 
-export const setToken = async (token: string ) => {
+export const setToken = async (token: string) => {
 
-  try { 
+  try {
     const verifiedToken = await auth.verifyIdToken(token)
 
     if (!verifiedToken)
@@ -13,7 +13,8 @@ export const setToken = async (token: string ) => {
     const cookieStore = await cookies();
     cookieStore.set('session', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production'
+      secure: process.env.NODE_ENV === 'production',
+      expires: new Date('2025-02-25T12:00:00Z')
     })
 
   } catch (error) {
@@ -23,7 +24,7 @@ export const setToken = async (token: string ) => {
 
 }
 
-export const getCookie = async ({ cookieName }: { cookieName: string }) => {
+export const getCookie = async (cookieName: string) => {
 
   try {
     const cookieStore = await cookies();
@@ -35,7 +36,34 @@ export const getCookie = async ({ cookieName }: { cookieName: string }) => {
 
 }
 
-export const deleteCookie = async (cookieName : string) => {
+export const setCookie = async (name: string, value: string) => {
+
+  try {
+    const cookieStore = await cookies();
+    await cookieStore.set(name, value)
+  } catch (error) {
+    return null
+  }
+
+}
+
+export const setCookieE = async (name: string, value: string) => {
+
+  try {
+    const cookieStore = await cookies();
+    await cookieStore.set(name, value, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge : 3600
+    }
+    )
+  } catch (error) {
+    return null
+  }
+
+}
+
+export const deleteCookie = async (cookieName: string) => {
 
   try {
     const cookieStore = await cookies();
