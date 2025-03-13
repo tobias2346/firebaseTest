@@ -4,13 +4,10 @@ import { deleteUser } from '../actions/actions'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 
-interface DeleteButtonProps {email: string;}   
-
-const DeleteButton = ({ email }: DeleteButtonProps) => {
-    console.log(email)
+const DeleteButton = ({ email }: { email: string }) => {
     const handleDelete = async () => {
         console.log(email)
-        const response = await deleteUser('nms@gmail.com')
+        const response = await deleteUser(email)
         if (response) {
             toast.success('Usuario eliminado correctamente')
         } else {

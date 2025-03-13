@@ -70,13 +70,12 @@ export const deleteCookie = async (cookieName: string) => {
 
 }
 
-
 export const createUserAction = async (email: string, password: string, name: string) => {
   try {
     const create = await firestore.collection('users').add({
-      email: email,
-      password: password,
-      name: name
+      email,
+      password,
+      name
     })
 
     return {
@@ -99,8 +98,28 @@ export const getUsers = async () => {
 }
 
 export const deleteUser = async (email: string) => {
-  const user = await firestore.collection('users').doc(email).delete()
-  console.log(user)
-  return user
+  try {
+    await firestore.collection('users').doc(email).delete()
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
 }
 
+
+export const registerUser = async (email: string, password: string, name: string) => {
+
+  try {
+    await auth.createUser({
+      email,
+      password,
+      displayName: name
+    })
+
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
